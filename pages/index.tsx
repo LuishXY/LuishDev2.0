@@ -2,51 +2,8 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useTypewriter, Cursor } from "react-simple-typewriter";
 
-
-useEffect(() => {
-  // Auto-show help on load
-  handleCommand("help");
-}, []);
-
-const commands = {
-  help: [
-    "Available commands:",
-    "  help      - Show available commands",
-    "  man       - Read the manual",
-    "  clear     - Clear the screen",
-    "  certs     - View certifications",
-    "  projects  - View selected projects",
-    "  resume  - Download latest resume",
-    "  contact  - Show the best ways to reach me",
-    "  experience- View work history",
-  ],
-  man: [
-    "MAN PAGE - LH Terminal Emulator",
-    "A simulated terminal interface to explore the career and achievements of Luis F Herrera.",
-    "Use `help` to discover available commands.",
-  ],
-  clear: [],
-  certs: ["[[SHOW_CERTS]]"],
-  projects: ["[[SHOW_PROJECTS]]"],
-  experience: ["[[SHOW_EXPERIENCE]]"],
-  contact: ["[[SHOW_CONTACT]]"],
-  resume: ["Opening resume..."],
-};
-
 export default function Home() {
-
-  const [terminalLines, setTerminalLines] = useState<string[]>([
-    "$ help",
-    "Available commands:",
-    "  help      - Show available commands",
-    "  man       - Read the manual",
-    "  clear     - Clear the screen",
-    "  certs     - View certifications",
-    "  projects  - View selected projects",
-    "  experience- View work history",
-    "  resume    - View resume PDF",
-    "  contact   - View contact info",
-  ]);
+  const [terminalLines, setTerminalLines] = useState<string[]>([]);
   const [input, setInput] = useState("");
   const [activeSection, setActiveSection] = useState("");
   const [history, setHistory] = useState<string[]>([]);
@@ -55,7 +12,7 @@ export default function Home() {
     words: [
       '>luish:~/website/ echo "Hi, I’m Luis."',
       '>luish:~/website/ echo "I build scalable infrastructure"',
-      '>luish:~/website/ echo "Site Reliability Engineer',
+      '>luish:~/website/ echo "Site Reliability Engineer"',
       '>luish:~/website/ echo "Serial Founder"',
       '>luish:~/website/ echo "Cloud Architect"',
     ],
@@ -63,6 +20,34 @@ export default function Home() {
     delaySpeed: 1500,
   });
 
+  const commands: Record<string, string[]> = {
+    help: [
+      "Available commands:",
+      "  help      - Show available commands",
+      "  man       - Read the manual",
+      "  clear     - Clear the screen",
+      "  certs     - View certifications",
+      "  projects  - View selected projects",
+      "  resume    - Download latest resume",
+      "  contact   - Show contact info",
+      "  experience- View work history",
+    ],
+    man: [
+      "MAN PAGE - LH Terminal Emulator",
+      "A simulated terminal interface to explore the career and achievements of Luis F Herrera.",
+      "Use `help` to discover available commands.",
+    ],
+    clear: [],
+    certs: ["[[SHOW_CERTS]]"],
+    projects: ["[[SHOW_PROJECTS]]"],
+    experience: ["[[SHOW_EXPERIENCE]]"],
+    contact: ["[[SHOW_CONTACT]]"],
+    resume: ["Opening resume..."],
+  };
+
+  useEffect(() => {
+    handleCommand("help");
+  }, []);
 
   const handleCommand = (cmd: string) => {
     if (cmd === "clear") {
@@ -80,17 +65,11 @@ export default function Home() {
         window.open("/LuisHerrera_Resume.pdf", "_blank");
       }
 
-      if (output.includes("[[SHOW_CERTS]]")) {
-        setActiveSection("certs");
-      } else if (output.includes("[[SHOW_PROJECTS]]")) {
-        setActiveSection("projects");
-      } else if (output.includes("[[SHOW_EXPERIENCE]]")) {
-        setActiveSection("experience");
-      } else if (output.includes("[[SHOW_CONTACT]]")) {
-        setActiveSection("contact");
-      } else {
-        setActiveSection("");
-      }
+      if (output.includes("[[SHOW_CERTS]]")) setActiveSection("certs");
+      else if (output.includes("[[SHOW_PROJECTS]]")) setActiveSection("projects");
+      else if (output.includes("[[SHOW_EXPERIENCE]]")) setActiveSection("experience");
+      else if (output.includes("[[SHOW_CONTACT]]")) setActiveSection("contact");
+      else setActiveSection("");
     } else {
       setTerminalLines((prev) => [
         ...prev,
@@ -159,7 +138,7 @@ export default function Home() {
               onKeyDown={handleKeyDown}
               placeholder="type a command..."
               autoFocus
-              className="terminal-input flex-1 caret-animation"
+              className="terminal-input flex-1 caret-animation bg-[#1e1f1c] text-monokai-green placeholder:text-monokai-yellow border-none outline-none"
             />
           </div>
         </div>
@@ -170,10 +149,8 @@ export default function Home() {
           caret-color: #a6e22e;
           animation: blink-caret 1s step-start infinite;
         }
-
         @keyframes blink-caret {
-          0%,
-          100% {
+          0%, 100% {
             caret-color: transparent;
           }
           50% {
@@ -181,18 +158,16 @@ export default function Home() {
           }
         }
       `}</style>
-
       {activeSection === "certs" && (
-        <section className="w-full max-w-6xl mt-8 text-monokai-pink">
+        <section className="w-full max-w-6xl mt-8 text-monokai-green">
           <h2 className="text-monokai-orange text-lg mb-2">Certifications</h2>
           <ul className="list-disc list-inside">
-            <li>AZ-305: Solutions Architect Expert</li>
+            <li>AZ-305: Azure Solutions Architect Expert</li>
             <li>AZ-900: Microsoft Azure Fundamentals</li>
             <li>AWS Certified Cloud Practitioner</li>
           </ul>
         </section>
       )}
-
       {activeSection === "projects" && (
         <section className="w-full max-w-6xl mt-8 text-monokai-yellow">
           <h2 className="text-monokai-orange text-lg mb-2">Projects</h2>
@@ -334,7 +309,3 @@ export default function Home() {
     </main>
   );
 }
-function handleCommand(arg0: string) {
-  throw new Error("Function not implemented.");
-}
-
