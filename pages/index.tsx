@@ -2,6 +2,16 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useTypewriter, Cursor } from "react-simple-typewriter";
 
+
+useEffect(() => {
+  // Auto-show help on load
+  handleCommand("help");
+}, []);
+
+useEffect(() => {
+  window.scrollTo(0, document.body.scrollHeight);
+}, [terminalLines]);
+
 const commands = {
   help: [
     "Available commands:",
@@ -28,7 +38,19 @@ const commands = {
 };
 
 export default function Home() {
-  const [terminalLines, setTerminalLines] = useState<string[]>([]);
+
+  const [terminalLines, setTerminalLines] = useState<string[]>([
+    "$ help",
+    "Available commands:",
+    "  help      - Show available commands",
+    "  man       - Read the manual",
+    "  clear     - Clear the screen",
+    "  certs     - View certifications",
+    "  projects  - View selected projects",
+    "  experience- View work history",
+    "  resume    - View resume PDF",
+    "  contact   - View contact info",
+  ]);
   const [input, setInput] = useState("");
   const [activeSection, setActiveSection] = useState("");
   const [history, setHistory] = useState<string[]>([]);
@@ -45,10 +67,6 @@ export default function Home() {
     delaySpeed: 1500,
   });
 
-  useEffect(() => {
-    // Auto-show help on load
-    handleCommand("help");
-  }, []);
 
   const handleCommand = (cmd: string) => {
     if (cmd === "clear") {
@@ -320,3 +338,7 @@ export default function Home() {
     </main>
   );
 }
+function handleCommand(arg0: string) {
+  throw new Error("Function not implemented.");
+}
+
