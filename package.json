@@ -2,6 +2,7 @@
   "name": "luish-dev",
   "version": "1.0.0",
   "private": true,
+  "homepage": "https://luishxy.github.io/LuishDev2.0",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
