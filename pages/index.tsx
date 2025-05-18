@@ -8,10 +8,6 @@ useEffect(() => {
   handleCommand("help");
 }, []);
 
-useEffect(() => {
-  window.scrollTo(0, document.body.scrollHeight);
-}, [terminalLines]);
-
 const commands = {
   help: [
     "Available commands:",
